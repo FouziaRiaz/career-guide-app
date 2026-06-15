@@ -3,7 +3,7 @@ import re
 import json
 import requests
 import tempfile
-import pdfkit
+from weasyprint import HTML
 import streamlit as st
 from groq import Groq
 
@@ -167,6 +167,6 @@ if st.session_state.submitted:
                 """
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as f:
                     pdf_path = f.name
-                    pdfkit.from_string(pdf_html, pdf_path)
+                    HTML(string=pdf_html).write_pdf(pdf_path)
                     with open(pdf_path, "rb") as file:
                         st.download_button("Download PDF", data=file, file_name=f"{selected_career}_plan.pdf", mime="application/pdf")
